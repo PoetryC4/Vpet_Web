@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AnimationDebug: typeof import('./src/components/interaction/AnimationDebug.vue')['default']
+    DrinkTable: typeof import('./src/components/table/DrinkTable.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDialog: typeof import('element-plus/es')['ElDialog']
@@ -23,6 +25,12 @@ declare module 'vue' {
     ElStatistic: typeof import('element-plus/es')['ElStatistic']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    FoodTable: typeof import('./src/components/table/FoodTable.vue')['default']
+    Interaction: typeof import('./src/components/interaction/Interaction.vue')['default']
+    MedicineTable: typeof import('./src/components/table/MedicineTable.vue')['default']
+    Pet: typeof import('./src/components/pet/Pet.vue')['default']
+    PetPage: typeof import('./src/components/pet/PetPage.vue')['default']
+    PresentTable: typeof import('./src/components/table/PresentTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

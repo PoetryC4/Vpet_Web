@@ -28,7 +28,7 @@ public class PresentController {
     @PostMapping("/save")
     public R<String> addPresent(@RequestBody Present present) {
 
-        if(presentService.save(present))
+        if (presentService.save(present))
             return R.success("Y");
 
         return R.error("N");
@@ -46,7 +46,7 @@ public class PresentController {
         queryWrapper.orderByAsc(Present::getPresentId);
 
         //执行查询
-        IPage pageRes = presentService.page(pageInfo,queryWrapper);
+        IPage pageRes = presentService.page(pageInfo, queryWrapper);
 
         //List<Present> PresentRes = pageRes.getRecords();
 

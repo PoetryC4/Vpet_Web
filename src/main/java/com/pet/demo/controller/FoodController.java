@@ -27,7 +27,7 @@ public class FoodController {
     @PostMapping("/save")
     public R<String> addFood(@RequestBody Food food) {
 
-        if(foodService.save(food))
+        if (foodService.save(food))
             return R.success("Y");
 
         return R.error("N");
@@ -45,7 +45,7 @@ public class FoodController {
         queryWrapper.orderByAsc(Food::getFoodId);
 
         //执行查询
-        IPage pageRes = foodService.page(pageInfo,queryWrapper);
+        IPage pageRes = foodService.page(pageInfo, queryWrapper);
 
         //List<Food> foodRes = pageRes.getRecords();
 

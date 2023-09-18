@@ -22,10 +22,10 @@ public class FileController {
         String dirPath = fileImgs.getDirPath();
         String dirSuffix = fileImgs.getDirSuffix();
 
-        if(dirPath == null) return R.error("err");
+        if (dirPath == null) return R.error("err");
 
-        dirPath = dirPath.replace("ATslash;","\\");
-        dirSuffix = dirSuffix.replace("ATslash;","\\");
+        dirPath = dirPath.replace("ATslash;", "\\");
+        dirSuffix = dirSuffix.replace("ATslash;", "\\");
 
         List<String> fileList = listFilesInFolder(dirPath, dirSuffix);
         //System.out.println(fileList);

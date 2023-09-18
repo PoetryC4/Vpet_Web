@@ -29,7 +29,7 @@ public class MedicineController {
     @PostMapping("/save")
     public R<String> addMedicine(@RequestBody Medicine medicine) {
 
-        if(medicineService.save(medicine))
+        if (medicineService.save(medicine))
             return R.success("Y");
 
         return R.error("N");
@@ -47,7 +47,7 @@ public class MedicineController {
         queryWrapper.orderByAsc(Medicine::getMedicineId);
 
         //执行查询
-        IPage pageRes = medicineService.page(pageInfo,queryWrapper);
+        IPage pageRes = medicineService.page(pageInfo, queryWrapper);
 
         //List<Medicine> medicineRes = pageRes.getRecords();
 

@@ -10,18 +10,18 @@
 // }
 
 export const validatorNumber = (rule: object, value: string, callback: Function) => {
-  if (!value || value === '') {
-    callback(new Error("err.empty"));
-  } else if (isNaN(Number(value))) {
-    callback(new Error('err.notNumber'));
-  } else {
-    callback();
-  }
+    if (!value || value === '') {
+        callback(new Error("err.empty"));
+    } else if (isNaN(Number(value))) {
+        callback(new Error('err.notNumber'));
+    } else {
+        callback();
+    }
 }
 export const validatorString = (rule: object, value: string, callback: Function) => {
-  if (!value || value === '') {
-    callback(new Error("err.empty"));
-  } else {
-    callback();
-  }
+    if (!value || value === '') {
+        callback(new Error("err.empty"));
+    } else {
+        callback();
+    }
 }

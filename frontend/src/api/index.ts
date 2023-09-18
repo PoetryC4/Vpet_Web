@@ -1,5 +1,5 @@
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios'
-import { post } from '@/utils/request'
+import { post } from '@/plugins/request'
 
 export function fetchChatAPI<T = any>(
   prompt: string,

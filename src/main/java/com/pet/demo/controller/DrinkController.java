@@ -28,7 +28,7 @@ public class DrinkController {
     @PostMapping("/save")
     public R<String> addDrink(@RequestBody Drink drink) {
 
-        if(drinkService.save(drink))
+        if (drinkService.save(drink))
             return R.success("Y");
 
         return R.error("N");
@@ -46,7 +46,7 @@ public class DrinkController {
         queryWrapper.orderByAsc(Drink::getDrinkId);
 
         //执行查询
-        IPage pageRes = drinkService.page(pageInfo,queryWrapper);
+        IPage pageRes = drinkService.page(pageInfo, queryWrapper);
 
         //List<Food> drinkRes = pageRes.getRecords();
 

@@ -40,6 +40,6 @@ public class InteractionController {
             return R.error("err");
         }
         return R.success(map1.get("response"));*/
-        return R.success("sadukofh"+Math.random());
+        return R.success("sadukofh" + Math.random());
     }
 }
