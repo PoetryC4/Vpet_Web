@@ -3,9 +3,9 @@ import {getMedicine} from '@/api/imgs'
 import {medicineDrawer, buyMedicine} from '@/components/scripts/pet'
 import {reactive, ref} from 'vue';
 
-let page: number = 1
-let pageSize: number = 8
-let pageSizes: number[] = [8, 16, 24]
+let curPage = ref(1)
+let pageSize = ref(8)
+let pageSizes = ref([8, 16, 24])
 const centerDialogVisible = ref<boolean>(false)
 let imgUrlPrefix = 'http://127.0.0.1:8011/front/'
 const tableValues = reactive({
@@ -47,8 +47,8 @@ async function manualBuyMedicine(row: any) {
 
 const getMedicineTableData = async () => {
   let res = await getMedicine({
-    page: page,
-    pageSize: pageSize,
+    page: curPage.value,
+    pageSize: pageSize.value,
   })
   res = res.data
   if (res.code === 0) {
@@ -60,11 +60,11 @@ const getMedicineTableData = async () => {
 };
 
 const handleSizeChange = (val: number) => {
-  pageSize = val
+  pageSize.value = val
   getMedicineTableData()
 }
 const handleCurrentChange = (val: number) => {
-  page = val
+  curPage.value = val
   getMedicineTableData()
 }
 
@@ -120,7 +120,7 @@ export default {
         </a-table-column>
       </template>
     </a-table>
-    <a-pagination :total="medicineCounts" :current="1" :page-size="8" show-total show-jumper show-page-size
+    <a-pagination :total="medicineCounts" :current="curPage" :page-size="pageSize" show-total show-jumper show-page-size
                   :page-size-options="pageSizes"
                   @page-size-change="handleSizeChange"
                   @change="handleCurrentChange"

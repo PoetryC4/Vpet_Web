@@ -61,15 +61,15 @@ const speedNormal = ref<number>(9)
 const speedSlow = ref<number>(6)
 const speedFalling = ref<number>(17)
 
-const isStudy = ref<boolean>(false)
-const isCopy = ref<boolean>(false)
-const isLive = ref<boolean>(false)
-const isSleep = ref<boolean>(false)
-const isDance = ref<boolean>(false)
-const isResearch = ref<boolean>(false)
-const isPlayOne = ref<boolean>(false)
-const isWorkClean = ref<boolean>(false)
-const isRemoveObject = ref<boolean>(false)
+export const isStudy = ref<boolean>(false)
+export const isCopy = ref<boolean>(false)
+export const isLive = ref<boolean>(false)
+export const isSleep = ref<boolean>(false)
+export const isDance = ref<boolean>(false)
+export const isResearch = ref<boolean>(false)
+export const isPlayOne = ref<boolean>(false)
+export const isWorkClean = ref<boolean>(false)
+export const isRemoveObject = ref<boolean>(false)
 
 const interactionStrs = ref<string[]>([
     'Sleep',
@@ -751,31 +751,22 @@ export async function shutdown() {
     isShutDown.value = true
     switch (curState.value) {
         case 'Normal': {
-            console.log(1)
             await petAnimation(baseLocalUrl.value + '/vup/Shutdown/Normal/' + Math.round(0.5 + Math.random() * 2), false)
-            console.log(1)
             break
         }
         case 'Ill': {
-            console.log(2)
             await petAnimation(baseLocalUrl.value + '/vup/Shutdown/Ill', false)
-            console.log(2)
             break
         }
         case 'Happy': {
-            console.log(3)
             await petAnimation(baseLocalUrl.value + '/vup/Shutdown/Happy', false)
-            console.log(3)
             break
         }
         case 'PoorCondition': {
-            console.log(4)
             await petAnimation(baseLocalUrl.value + '/vup/Shutdown/PoorCondition', false)
-            console.log(4)
             break
         }
         default: {
-            console.log(5)
             curState.value = 'Normal'
             break
         }
@@ -1143,4 +1134,8 @@ export async function chatSpeak(duration: number) {
         }
     }
     durSwitch.value = false
+}
+
+export function getFlagsAnd(curTry:boolean) {
+    return !curTry&&(isStudy.value ||isCopy.value||isLive.value||isSleep.value||isDance.value||isResearch.value||isPlayOne.value||isWorkClean.value||isRemoveObject.value)
 }

@@ -4,9 +4,9 @@ import {reactive, ref} from 'vue';
 import {getDrink} from '@/api/imgs'
 import {drinkDrawer, buyDrink} from '@/components/scripts/pet'
 
-let page: number = 1
-let pageSize: number = 8
-let pageSizes: number[] = [8, 16, 24]
+let curPage = ref(1)
+let pageSize = ref(8)
+let pageSizes = ref([8, 16, 24])
 const centerDialogVisible = ref<boolean>(false)
 let imgUrlPrefix = 'http://127.0.0.1:8011/front/'
 
@@ -58,8 +58,8 @@ async function manualBuyDrink(row: any) {
 
 const getDrinkTableData = async () => {
   let res = await getDrink({
-    page: page,
-    pageSize: pageSize,
+    page: curPage.value,
+    pageSize: pageSize.value,
   })
   res = res.data
   if (res.code === 0) {
@@ -71,11 +71,13 @@ const getDrinkTableData = async () => {
 };
 
 const handleSizeChange = (val: number) => {
-  pageSize = val
+  pageSize.value = val
   getDrinkTableData()
 }
 const handleCurrentChange = (val: number) => {
-  page = val
+  console.log(val)
+  console.log(curPage.value)
+  curPage.value = val
   getDrinkTableData()
 }
 
@@ -131,10 +133,12 @@ export default {
         </a-table-column>
       </template>
     </a-table>
-    <a-pagination :total="drinkCounts" :current="1" :page-size="8" show-total show-jumper show-page-size
+    <a-pagination :total="drinkCounts" show-total show-jumper show-page-size
                   :page-size-options="pageSizes"
                   @page-size-change="handleSizeChange"
                   @change="handleCurrentChange"
+                  v-model:current="curPage"
+                  v-model:page-size="pageSize"
                   style="left: 0;right: 0;top: 0;bottom: 0;margin: 10% auto;">
       <template #page-item="{ page }">
         - {{ page }} -
@@ -146,7 +150,8 @@ export default {
         <icon-sun-fill/>
       </template>
     </a-pagination>
-    <a-modal v-model:visible="centerDialogVisible" @ok="centerDialogVisible = false" @cancel="centerDialogVisible = false">
+    <a-modal v-model:visible="centerDialogVisible" @ok="centerDialogVisible = false"
+             @cancel="centerDialogVisible = false">
       <template #title>
         {{ tableValues.title }}
       </template>

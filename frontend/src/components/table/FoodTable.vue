@@ -3,9 +3,9 @@ import {getFood} from '@/api/imgs'
 import {foodDrawer, buyFood} from '@/components/scripts/pet'
 import {reactive, ref} from 'vue';
 
-let page: number = 1
-let pageSize: number = 8
-let pageSizes: number[] = [8, 16, 24]
+let curPage = ref(1)
+let pageSize = ref(8)
+let pageSizes = ref([8, 16, 24])
 const centerDialogVisible = ref<boolean>(false)
 let imgUrlPrefix = 'http://127.0.0.1:8011/front/'
 const tableValues = reactive({
@@ -55,8 +55,8 @@ async function manualBuyFood(row: any) {
 
 const getFoodTableData = async () => {
   let res = await getFood({
-    page: page,
-    pageSize: pageSize,
+    page: curPage.value,
+    pageSize: pageSize.value,
   })
   res = res.data
   if (res.code === 0) {
@@ -68,11 +68,11 @@ const getFoodTableData = async () => {
 };
 
 const handleSizeChange = (val: number) => {
-  pageSize = val
+  pageSize.value = val
   getFoodTableData()
 }
 const handleCurrentChange = (val: number) => {
-  page = val
+  curPage.value = val
   getFoodTableData()
 }
 
@@ -127,10 +127,12 @@ export default {
         </a-table-column>
       </template>
     </a-table>
-    <a-pagination :total="foodCounts" :current="1" :page-size="8" show-total show-jumper show-page-size
+    <a-pagination :total="foodCounts" show-total show-jumper show-page-size
                   :page-size-options="pageSizes"
                   @page-size-change="handleSizeChange"
                   @change="handleCurrentChange"
+                  v-model:current="curPage"
+                  v-model:page-size="pageSize"
                   style="left: 0;right: 0;top: 0;bottom: 0;margin: 10% auto;">
       <template #page-item="{ page }">
         - {{ page }} -

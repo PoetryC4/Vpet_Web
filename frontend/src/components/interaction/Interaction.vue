@@ -3,17 +3,6 @@ import {ref} from 'vue'
 import {chat} from '@/api/imgs'
 import {move, responseShow, responseSwicth, interactionDrawer, chatSpeak} from '@/components/scripts/pet'
 import {getLeftByMargin, getTopByMargin} from '@/components/scripts/animationFunc'
-import {
-  studyToggle,
-  sleepToggle,
-  liveToggle,
-  copyToggle,
-  danceToggle,
-  researchToggle,
-  playOneToggle,
-  workCleanToggle,
-  removeObjectToggle
-} from '@/components/scripts/pet'
 import {sleep} from '@/components/scripts/utils';
 import $ from 'jquery';
 

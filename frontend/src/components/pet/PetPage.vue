@@ -4,6 +4,7 @@ import FoodTable from '@/components/table/FoodTable.vue';
 import MedicineTable from '@/components/table/MedicineTable.vue';
 import Interaction from '@/components/interaction/Interaction.vue';
 import AnimationDebug from '@/components/interaction/AnimationDebug.vue';
+import {getFlagsAnd} from '@/components/scripts/pet'
 import {
   valMoney,
   valEndu,
@@ -28,7 +29,17 @@ import {
   researchToggle,
   playOneToggle,
   workCleanToggle,
-  removeObjectToggle
+  removeObjectToggle,
+  isStudy,
+  isCopy,
+  isDance,
+  isLive,
+  isRemoveObject,
+  isSleep,
+  isResearch,
+  isShutDown,
+  isWorkClean,
+  isPlayOne
 } from '@/components/scripts/pet'
 import PresentTable from '@/components/table/PresentTable.vue';
 import {ref} from "vue";
@@ -36,10 +47,12 @@ import {ref} from "vue";
 const doMenuItemClick = (key: string) => {
   switch (key) {
     case '0_0': {
+      if (getFlagsAnd(true)) return
       start()
       break
     }
     case '0_1': {
+      if (getFlagsAnd(true)) return
       shutdown()
       break
     }
@@ -52,38 +65,47 @@ const doMenuItemClick = (key: string) => {
       break
     }
     case '1_0': {
+      if (getFlagsAnd(isStudy.value)) return
       studyToggle()
       break
     }
     case '1_1': {
+      if (getFlagsAnd(isDance.value)) return
       danceToggle();
       break
     }
     case '1_2': {
+      if (getFlagsAnd(isSleep.value)) return
       sleepToggle()
       break
     }
     case '1_3': {
+      if (getFlagsAnd(isCopy.value)) return
       copyToggle()
       break
     }
     case '1_4': {
+      if (getFlagsAnd(isResearch.value)) return
       researchToggle()
       break
     }
     case '1_5': {
+      if (getFlagsAnd(isLive.value)) return
       liveToggle()
       break
     }
     case '1_6': {
+      if (getFlagsAnd(isPlayOne.value)) return
       playOneToggle()
       break
     }
     case '1_7': {
+      if (getFlagsAnd(isWorkClean.value)) return
       workCleanToggle()
       break
     }
     case '1_8': {
+      if (getFlagsAnd(isRemoveObject.value)) return
       removeObjectToggle()
       break
     }
