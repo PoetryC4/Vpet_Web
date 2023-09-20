@@ -8,9 +8,9 @@ let pageSize: number = 8
 let pageSizes: number[] = [8, 16, 24]
 const centerDialogVisible = ref<boolean>(false)
 let imgUrlPrefix = 'http://127.0.0.1:8011/front/'
-const tableData = reactive({
+const tableValues = reactive({
   title: "test",
-  presentTable: [] as any[]
+  medicineTable: [] as any[]
 });
 const data = reactive({
   medicineTable: []
@@ -18,8 +18,8 @@ const data = reactive({
 let medicineCounts: number = 0
 
 async function openDialog(row: any) {
-  tableData.title = row.medicineName + " 的属性"
-  tableData.presentTable = [
+  tableValues.title = row.medicineName + " 的属性"
+  tableValues.medicineTable = [
     {
       name: "心情值",
       value: row.medicineMood,
@@ -71,90 +71,83 @@ const handleCurrentChange = (val: number) => {
 getMedicineTableData()
 </script>
 
-<template>
-  <div>
+<script lang="ts">
+import {
+  IconSunFill,
+  IconSend,
+} from '@arco-design/web-vue/es/icon';
 
-    <el-table
-        :data="data.medicineTable"
-        stripe
-        class="tableBox"
-    >
-      <el-table-column label="药品展示">
-        <template v-slot="scope">
-          <el-image
-              style="width: 70px; height: 70px"
-              :src="imgUrlPrefix+'medicine/'+scope.row.medicinePicPath"
-              :fit="'contain'"></el-image>
+export default {
+  components: {
+    IconSunFill,
+    IconSend,
+  },
+};
+</script>
+<template>
+
+  <div id="medic_table">
+    <a-table :data="data.medicineTable" stripe :pagination="false">
+      <template #columns>
+        <a-table-column title="药品展示">
+          <template #cell="{ record }">
+            <a-image
+                width="70"
+                height="70"
+                :src="imgUrlPrefix+'medicine/'+record.medicinePicPath"
+                :fit="'contain'"
+            />
+          </template>
+        </a-table-column>
+        <a-table-column title="药品名称" data-index="medicineName"></a-table-column>
+        <a-table-column title="药品价格(￥)" data-index="medicinePrice"></a-table-column>
+        <a-table-column title="查看属性" :width="160">
+          <template #cell="{ record }">
+            <a-button @click="openDialog(record)">查看</a-button>
+          </template>
+        </a-table-column>
+        <a-table-column title="是否购买" :width="160">
+          <template #cell="{ record }">
+            <a-button
+                type="primary"
+                size="large"
+                class="blueBug"
+                @click="manualBuyMedicine(record)"
+            >
+              购买
+            </a-button>
+          </template>
+        </a-table-column>
+      </template>
+    </a-table>
+    <a-pagination :total="medicineCounts" :current="1" :page-size="8" show-total show-jumper show-page-size
+                  :page-size-options="pageSizes"
+                  @page-size-change="handleSizeChange"
+                  @change="handleCurrentChange"
+                  style="left: 0;right: 0;top: 0;bottom: 0;margin: 10% auto;">
+      <template #page-item="{ page }">
+        - {{ page }} -
+      </template>
+      <template #page-item-step="{ type }">
+        <icon-send :style="type==='previous' ? {transform:`rotate(180deg)`} : undefined"/>
+      </template>
+      <template #page-item-ellipsis>
+        <icon-sun-fill/>
+      </template>
+    </a-pagination>
+    <a-modal v-model:visible="centerDialogVisible" @ok="centerDialogVisible = false"
+             @cancel="centerDialogVisible = false">
+      <template #title>
+        {{ tableValues.title }}
+      </template>
+
+      <a-table :data="tableValues.medicineTable" stripe>
+        <template #columns>
+          <a-table-column title="名称" data-index="name" :width="200"></a-table-column>
+          <a-table-column title="值" data-index="value" :width="200"></a-table-column>
         </template>
-      </el-table-column>
-      <el-table-column
-          prop="medicineName"
-          label="药品名称"
-      ></el-table-column>
-      <el-table-column
-          prop="medicinePrice"
-          label="药品价格(￥)"
-      ></el-table-column>
-      <el-table-column
-          label="查看属性"
-          width="160"
-          align="center"
-      >
-        <template v-slot="scope">
-          <el-button
-              link
-              type="primary"
-              size="large"
-              class="blueBug"
-              @click="openDialog(scope.row)"
-          >
-            查看
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="是否购买"
-          width="160"
-          align="center"
-      >
-        <template v-slot="scope">
-          <el-button
-              link
-              type="primary"
-              size="large"
-              class="blueBug"
-              @click="manualBuyMedicine(scope.row)"
-          >
-            购买
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-        class="pageList"
-        :page-sizes="pageSizes"
-        v-model:page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="medicineCounts"
-        v-model:current-page="page"
-        v-bind="$attrs"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-    ></el-pagination>
-    <el-dialog
-        :title="tableData.title"
-        :visible.sync="centerDialogVisible"
-        v-model:model-value="centerDialogVisible"
-        width="30%"
-        center>
-      <el-table :data="tableData.presentTable">
-        <el-table-column width="200" property="name" label="名称"></el-table-column>
-        <el-table-column width="200" property="value" label="值"></el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-        </span>
-    </el-dialog>
+      </a-table>
+    </a-modal>
+
   </div>
 </template>

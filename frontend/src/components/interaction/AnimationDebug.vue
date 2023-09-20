@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import * as petAimations from '@/components/scripts/animation'
 import {durDebug} from '@/components/scripts/pet'
 
-let stateSelected = ref<number>(1)
+let stateSelected = ref()
 
 let stateOptions = [
   {
@@ -24,7 +24,7 @@ let stateOptions = [
   }
 ]
 
-let animationSelected = ref<number>(1)
+let animationSelected = ref()
 
 let animationOptions: any[] = []
 let index = 1
@@ -36,12 +36,8 @@ for (let item in petAimations) {
   index++
 }
 
-function selectChange(val: any) {
-  //console.log(animationOptions[animationSelected.value-1].label)
-  //console.log(stateOptions[stateSelected.value-1].label)
-}
-
 async function beginAnimationDebug() {
+  console.log(stateSelected.value)
   if (typeof petAimations[animationOptions[animationSelected.value - 1].label] === 'function') {
     durDebug.value = true
     await petAimations[animationOptions[animationSelected.value - 1].label](stateOptions[stateSelected.value - 1].label)
@@ -51,42 +47,31 @@ async function beginAnimationDebug() {
 </script>
 
 <template>
-  <div>
-    <el-row :gutter="70">
-      <el-col :span="10">
-        <el-select v-model:modelValue="stateSelected" placeholder="请选择状态" @change="selectChange">
-          <el-option
-              v-for="item in stateOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-          </el-option>
-        </el-select>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="10">
-        <el-select v-model:modelValue="animationSelected" placeholder="请选择动画" filterable @change="selectChange">
-          <el-option
-              v-for="item in animationOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-          </el-option>
-        </el-select>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="5">
-        <el-button type="primary" plain @click="beginAnimationDebug">调式动画</el-button>
-      </el-col>
-    </el-row>
-
+  <div id="anime_debug">
+    <a-row class="grid-demo" style="margin-bottom: 16px;">
+      <a-col :flex="2">
+        <a-select :defaultValue="stateOptions[0].label" :style="{width:'160px'}" placeholder="请选择状态" v-model="stateSelected">
+          <a-option v-for="item in stateOptions" :value="item.value" :label="item.label"/>
+        </a-select>
+      </a-col>
+      <a-col :flex="3">
+        <a-select :defaultValue="animationOptions[0].label" :style="{width:'240px'}" placeholder="请选择动画" v-model="animationSelected">
+          <a-option v-for="item in animationOptions" :value="item.value" :label="item.label"/>
+        </a-select>
+      </a-col>
+    </a-row>
+    <a-row class="grid-demo" style="margin-bottom: 16px;">
+      <a-col :flex="3">
+        <a-button type="primary" @click="beginAnimationDebug">调试</a-button>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
-<style>
-.el-row {
-  margin-top: 20px;
+<style scoped>
+.grid-demo {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
 }
 </style>

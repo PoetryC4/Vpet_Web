@@ -36,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'App',
         redirect: '/pet',
     },
+    {
+        path: '/test',
+        name: 'test',
+        component: () => import('@/components/interaction/AnimationDebug.vue')
+    },
 ]
 export const router = createRouter({
     history: createWebHashHistory(),

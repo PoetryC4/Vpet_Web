@@ -4,7 +4,6 @@ import FoodTable from '@/components/table/FoodTable.vue';
 import MedicineTable from '@/components/table/MedicineTable.vue';
 import Interaction from '@/components/interaction/Interaction.vue';
 import AnimationDebug from '@/components/interaction/AnimationDebug.vue';
-import {LTR, RTL} from 'element-plus/es/components/virtual-list/src/defaults';
 import {
   valMoney,
   valEndu,
@@ -20,13 +19,92 @@ import {
   medicineDrawer,
   animeDebugDrawer,
   valHeal,
-  presentDrawer
+  presentDrawer,
+  studyToggle,
+  sleepToggle,
+  liveToggle,
+  copyToggle,
+  danceToggle,
+  researchToggle,
+  playOneToggle,
+  workCleanToggle,
+  removeObjectToggle
 } from '@/components/scripts/pet'
 import PresentTable from '@/components/table/PresentTable.vue';
+import {ref} from "vue";
 
-let singleSpan: number = 2
-let singleGutter: number = 35
-let debugSpan: number = 2
+const doMenuItemClick = (key: string) => {
+  switch (key) {
+    case '0_0': {
+      start()
+      break
+    }
+    case '0_1': {
+      shutdown()
+      break
+    }
+    case '0_2': {
+      animeBtnClick()
+      break
+    }
+    case '0_3': {
+      interactionBtnClick()
+      break
+    }
+    case '1_0': {
+      studyToggle()
+      break
+    }
+    case '1_1': {
+      danceToggle();
+      break
+    }
+    case '1_2': {
+      sleepToggle()
+      break
+    }
+    case '1_3': {
+      copyToggle()
+      break
+    }
+    case '1_4': {
+      researchToggle()
+      break
+    }
+    case '1_5': {
+      liveToggle()
+      break
+    }
+    case '1_6': {
+      playOneToggle()
+      break
+    }
+    case '1_7': {
+      workCleanToggle()
+      break
+    }
+    case '1_8': {
+      removeObjectToggle()
+      break
+    }
+    case '2_0': {
+      foodBtnClick()
+      break
+    }
+    case '2_1': {
+      drinkBtnClick()
+      break
+    }
+    case '2_2': {
+      medicineBtnClick()
+      break
+    }
+    case '2_3': {
+      presentBtnClick()
+      break
+    }
+  }
+}
 
 function foodBtnClick() {
   foodDrawer.value = !foodDrawer.value
@@ -52,27 +130,54 @@ function animeBtnClick() {
   animeDebugDrawer.value = !animeDebugDrawer.value
 }
 
-const handleCloseFood = (done: () => void) => {
+const handleCloseFood = () => {
   foodDrawer.value = false
 }
-const handleCloseDrink = (done: () => void) => {
+const handleCloseDrink = () => {
   drinkDrawer.value = false
 }
-const handleClosePresent = (done: () => void) => {
+const handleClosePresent = () => {
   presentDrawer.value = false
 }
-const handleCloseMedicine = (done: () => void) => {
+const handleCloseMedicine = () => {
   medicineDrawer.value = false
 }
-const handleCloseInteraction = (done: () => void) => {
+const handleCloseInteraction = () => {
   interactionDrawer.value = false
 }
-const handleCloseAnimation = (done: () => void) => {
+const handleCloseAnimation = () => {
   animeDebugDrawer.value = false
 }
 </script>
+<script lang="ts">
+import {
+  IconMenuFold,
+  IconMenuUnfold,
+  IconCloud,
+  IconSun,
+  IconMoon,
+} from '@arco-design/web-vue/es/icon';
 
-<style lang="css">
+export default {
+  components: {
+    IconMenuFold,
+    IconMenuUnfold,
+    IconCloud,
+    IconSun,
+    IconMoon,
+  },
+};
+</script>
+
+<style lang="css" scoped>
+.float-right {
+  right: 0;
+  left: auto;
+  margin-right: 0;
+  margin-left: auto;
+  padding: 0;
+}
+
 .like {
   cursor: pointer;
   font-size: 25px;
@@ -86,15 +191,15 @@ const handleCloseAnimation = (done: () => void) => {
   background-color: rgba(197, 221, 241, 0.3);
 }
 
-.el-row {
+.a-row {
   margin-top: 20px;
 }
 
-.el-statistic {
+.a-statistic {
   color: #333333;
 }
 
-.el-button {
+.a-button {
   width: 100px;
   height: 50px;
 }
@@ -296,19 +401,19 @@ const handleCloseAnimation = (done: () => void) => {
   width: 777px !important;
 }
 
-.el-button--text {
+.a-button--text {
   font-weight: 400 !important;
   font-size: 13px !important;
 }
 
-.el-table td {
+.a-table td {
   font-size: 13px !important;
 }
 
-.el-table .cell,
-.el-table th div,
-.el-table--border td:first-child .cell,
-.el-table--border th:first-child .cell {
+.a-table .cell,
+.a-table th div,
+.a-table--border td:first-child .cell,
+.a-table--border th:first-child .cell {
   padding-left: 12px;
 }
 
@@ -316,137 +421,156 @@ const handleCloseAnimation = (done: () => void) => {
 
 
 <template>
-  <div class="fullDiv" id="petPage">
-    <el-row :gutter="30">
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="start">开始</el-button>
-      </el-col>
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="shutdown">关闭</el-button>
-      </el-col>
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="interactionBtnClick">互动</el-button>
-      </el-col>
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="animeBtnClick">动画调试</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="30">
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="foodBtnClick">吃</el-button>
-      </el-col>
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="drinkBtnClick">喝</el-button>
-      </el-col>
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="medicineBtnClick">服药</el-button>
-      </el-col>
-      <el-col :span="debugSpan">
-        <el-button type="primary" plain @click="presentBtnClick">礼</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valMoney" title="金钱"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valHeal" title="健康度"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valExp" title="经验"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valEndu" title="体力"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valMood" title="心情"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valHung" title="饱腹度"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="singleGutter">
-      <el-col :span="singleSpan">
-        <div class="valueShow">
-          <el-statistic group-separator="," :precision="2" :value="valThir" title="口渴度"></el-statistic>
-        </div>
-      </el-col>
-    </el-row>
-    <el-drawer
-        title="礼品超市"
-        :visible.sync="presentDrawer"
-        v-model="presentDrawer"
-        :direction="LTR"
-        :before-close="handleClosePresent"
-        :destroy-on-close="true">
+  <div id="petPage">
+    <a-menu
+        :style="{ width: '200px', height: '100%' }"
+        show-collapse-button
+        breakpoint="xl"
+        @menu-item-click="doMenuItemClick"
+    >
+      <a-menu-item key="0_0_0" data-obj="1">控制栏</a-menu-item>
+      <a-sub-menu key="0">
+        <template #icon>
+          <icon-cloud></icon-cloud>
+        </template>
+        <template #title>开关</template>
+        <a-menu-item key="0_0">开始</a-menu-item>
+        <a-menu-item key="0_1">关闭</a-menu-item>
+        <a-menu-item key="0_2">动画调试</a-menu-item>
+        <a-menu-item key="0_3">互动</a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="1">
+        <template #icon>
+          <icon-sun></icon-sun>
+        </template>
+        <template #title>互动</template>
+        <a-menu-item key="1_0">学习</a-menu-item>
+        <a-menu-item key="1_1">舞</a-menu-item>
+        <a-menu-item key="1_2">睡</a-menu-item>
+        <a-menu-item key="1_3">抄</a-menu-item>
+        <a-menu-item key="1_4">科研</a-menu-item>
+        <a-menu-item key="1_5">播</a-menu-item>
+        <a-menu-item key="1_6">玩耍</a-menu-item>
+        <a-menu-item key="1_7">清洁</a-menu-item>
+        <a-menu-item key="1_8">除物</a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="2">
+        <template #icon>
+          <icon-moon></icon-moon>
+        </template>
+        <template #title>投喂</template>
+        <a-menu-item key="2_0">吃</a-menu-item>
+        <a-menu-item key="2_1">喝</a-menu-item>
+        <a-menu-item key="2_2">服药</a-menu-item>
+        <a-menu-item key="2_3">礼物</a-menu-item>
+      </a-sub-menu>
+    </a-menu>
+    <a-list :size="'large'"
+            style="position:absolute; right: 10px;left: auto;top: 10px;bottom: auto;margin: 0;padding: 0;">
+      <template #header>
+        宠物数值
+      </template>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valMoney" title="金钱">
+          <template #prefix>￥</template>
+        </a-statistic>
+      </a-list-item>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valHeal" title="健康度"></a-statistic>
+      </a-list-item>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valExp" title="经验"></a-statistic>
+      </a-list-item>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valEndu" title="体力"></a-statistic>
+      </a-list-item>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valMood" title="心情"></a-statistic>
+      </a-list-item>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valHung" title="饱腹度"></a-statistic>
+      </a-list-item>
+      <a-list-item>
+        <a-statistic show-group-separator :precision="2" :value="valThir" title="口渴度"></a-statistic>
+      </a-list-item>
+    </a-list>
+    <a-drawer
+        :width="700"
+        :visible="presentDrawer"
+        :placement="'left'"
+        @ok="handleClosePresent"
+        @cancel="handleClosePresent"
+        unmountOnClose
+    >
+      <template #title>
+        礼品超市
+      </template>
       <PresentTable/>
-    </el-drawer>
-    <el-drawer
-        title="饮品超市"
-        :visible.sync="drinkDrawer"
-        v-model="drinkDrawer"
-        :direction="LTR"
-        :before-close="handleCloseDrink"
-        :destroy-on-close="true">
+    </a-drawer>
+    <a-drawer
+        :width="700"
+        :visible="drinkDrawer"
+        :placement="'left'"
+        @ok="handleCloseDrink"
+        @cancel="handleCloseDrink"
+        unmountOnClose
+    >
+      <template #title>
+        饮品超市
+      </template>
       <DrinkTable/>
-    </el-drawer>
-    <el-drawer
-        title="食品超市"
-        :visible.sync="foodDrawer"
-        v-model="foodDrawer"
-        :direction="LTR"
-        :before-close="handleCloseFood"
-        :destroy-on-close="true">
+    </a-drawer>
+    <a-drawer
+        :width="700"
+        :visible="foodDrawer"
+        :placement="'left'"
+        @ok="handleCloseFood"
+        @cancel="handleCloseFood"
+        unmountOnClose
+    >
+      <template #title>
+        食品超市
+      </template>
       <FoodTable/>
-    </el-drawer>
-    <el-drawer
-        title="药店"
-        :visible.sync="medicineDrawer"
-        v-model="medicineDrawer"
-        :direction="LTR"
-        :before-close="handleCloseMedicine"
-        :destroy-on-close="true">
+    </a-drawer>
+    <a-drawer
+        :width="700"
+        :visible="medicineDrawer"
+        :placement="'left'"
+        @ok="handleCloseMedicine"
+        @cancel="handleCloseMedicine"
+        unmountOnClose
+    >
+      <template #title>
+        药品超市
+      </template>
       <MedicineTable/>
-    </el-drawer>
-    <el-drawer
-        title="互动"
-        :visible.sync="interactionDrawer"
-        v-model="interactionDrawer"
-        :direction="RTL"
-        :before-close="handleCloseInteraction"
-        :destroy-on-close="true">
+    </a-drawer>
+    <a-drawer
+        :width="500"
+        :visible="interactionDrawer"
+        :placement="'right'"
+        @ok="handleCloseInteraction"
+        @cancel="handleCloseInteraction"
+        unmountOnClose
+    >
+      <template #title>
+        互动
+      </template>
       <Interaction/>
-    </el-drawer>
-    <el-drawer
-        title="动画调试"
-        :visible.sync="animeDebugDrawer"
-        v-model="animeDebugDrawer"
-        :direction="RTL"
-        :before-close="handleCloseAnimation"
-        :destroy-on-close="true">
+    </a-drawer>
+    <a-drawer
+        :width="500"
+        :visible="animeDebugDrawer"
+        :placement="'right'"
+        @ok="handleCloseAnimation"
+        @cancel="handleCloseAnimation"
+        unmountOnClose
+    >
+      <template #title>
+        动画调试
+      </template>
       <AnimationDebug/>
-    </el-drawer>
+    </a-drawer>
   </div>
 </template>

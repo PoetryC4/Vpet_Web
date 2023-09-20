@@ -10,8 +10,8 @@ import {getAssetsFile} from '@/components/scripts/utils'
   position: absolute;
   width: 400px;
   height: 400px;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   padding: 0;
   margin-left: 100px;
   margin-top: 100px;
@@ -19,23 +19,27 @@ import {getAssetsFile} from '@/components/scripts/utils'
 </style>
 
 <template>
-  <div class="fullDiv" id="pet">
-    <img alt="" :src="getAssetsFile(curImgStr)" class="myPet" id="myPet" style="display: none;"/>
-    <img alt="" :src="getAssetsFile(curHandImgStr)" class="myPet" id="myPetHand" style="display: none;"/>
-    <img alt="" :src="getAssetsFile(curFrontlayImgStr)" class="myPet" id="myPetFrontlay" style="display: none;"/>
-    <el-popover
-        ref="chatPopover"
-        placement="top-start"
-        :width="300"
-        :content="responseShow[0]"
-        v-model:visible="responseSwicth[0]">
-      <div
-          style="text-align: left; margin: 0"
-          slot="reference"
-          id="chatPopover"
-          v-popover:chatPopover>
-        content
-      </div>
-    </el-popover>
+  <div id="pet">
+    <img alt="" :src="getAssetsFile(curImgStr)" class="myPet" id="myPet" style="display: none;position: absolute"/>
+    <img alt="" :src="getAssetsFile(curHandImgStr)" class="myPet" id="myPetHand"
+         style="display: none;position: absolute"/>
+    <img alt="" :src="getAssetsFile(curFrontlayImgStr)" class="myPet" id="myPetFrontlay"
+         style="display: none;position: absolute"/>
+    <a-popover
+        content-style="width:400px;"
+        class="petPopover"
+        title=""
+        style="position: absolute;"
+        position="top"
+        :trigger="'contextMenu'"
+        :content="responseShow"
+        v-model:popup-visible="responseSwicth">
+      <template #content>
+        <div
+            id="chatPopover">
+          content
+        </div>
+      </template>
+    </a-popover>
   </div>
 </template>

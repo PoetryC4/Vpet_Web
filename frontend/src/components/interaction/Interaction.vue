@@ -32,7 +32,7 @@ async function manualMove(targetX: number, targetY: number) {
 }
 
 async function sendChat() {
-  responseSwicth[0] = false
+  responseSwicth.value = false
   let res = await chat({
     question: chatPrompt.value,
     history: history.value,
@@ -42,103 +42,93 @@ async function sendChat() {
     response.value = 'err:' + res.msg
     return
   }
+  responseSwicth.value = true
   interactionDrawer.value = false
-  $(".el-popper").css({
-    'margin-left': (getLeftByMargin() + 100) + 'px',
-    'margin-top': (getTopByMargin() - 10) + 'px',
-  })
-  responseSwicth[0] = true
   response.value = res.data
   tmpStr[0] = chatPrompt.value
   tmpStr[1] = response.value
   history.value.push(tmpStr)
-  responseShow[0] = ''
+  responseShow.value = ''
   chatSpeak(response.value.length * showInterval.value)
   $('#chatPopover').text('')
+  $(".arco-trigger-position-top").css({
+    'margin-left': (getLeftByMargin() + 100) + 'px',
+    'margin-top': (getTopByMargin() - 10) + 'px',
+  })
   for (let i = 0; i < response.value.length; i++) {
-    responseShow[0] = response.value.substring(0, i + 1) + (i % 6 < 3 ? '|' : '')
-    $('#chatPopover').text(responseShow[0])
+    responseShow.value = response.value.substring(0, i + 1) + (i % 6 < 3 ? '|' : '')
+    $('#chatPopover').text(responseShow.value)
+    $(".arco-trigger-position-top").css({
+      'margin-left': (getLeftByMargin() + 100) + 'px',
+      'margin-top': (getTopByMargin() - 10) + 'px',
+    })
     await sleep(showInterval.value)
   }
-  responseShow[0] = response.value
-  $('#chatPopover').text(responseShow[0])
+  responseShow.value = response.value
+  $('#chatPopover').text(responseShow.value)
+  $(".arco-trigger-position-top").css({
+    'margin-left': (getLeftByMargin() + 100) + 'px',
+    'margin-top': (getTopByMargin() - 10) + 'px',
+  })
+  await sleep(1000)
 }
 
 let response = ref<string>('')
 
 </script>
 
-<template>
-  <div>
-    <el-row :gutter="50">
-      <el-col :span="5">
-        <el-input
-            placeholder="targetX"
-            v-model:value="customTargetX"
-            v-model:model-value="customTargetX">
-        </el-input>
-      </el-col>
-      <el-col :span="5">
-        <el-input
-            placeholder="targetY"
-            @change="console.log(customTargetX)"
-            v-model:value="customTargetY"
-            v-model:model-value="customTargetY">
-        </el-input>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="5">
-        <el-button type="primary" plain @click="manualMove(customTargetX, customTargetY)">移动</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="15">
-        <el-input placeholder="question" v-model:model-value="chatPrompt" v-model:value="chatPrompt"></el-input>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="sendChat">调教</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="5">
-        <el-button type="primary" plain @click="studyToggle">学习</el-button>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="danceToggle">舞</el-button>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="sleepToggle">睡</el-button>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="copyToggle">抄</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="5">
-        <el-button type="primary" plain @click="researchToggle">科研</el-button>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="liveToggle">播</el-button>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="playOneToggle">玩耍</el-button>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" plain @click="workCleanToggle">清洁</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="70">
-      <el-col :span="5">
-        <el-button type="primary" plain @click="removeObjectToggle">除物</el-button>
-      </el-col>
-    </el-row>
+<script lang="ts">
+import {
+  IconSend,
+} from '@arco-design/web-vue/es/icon';
 
+export default {
+  components: {
+    IconSend,
+  },
+};
+</script>
+
+<template>
+  <div id="interaction">
+    <a-row class="grid-demo" style="margin-bottom: 100px;">
+      <a-col :flex="2">
+        <a-input-number v-model="customTargetX" :style="{width:'160px'}" placeholder="目标点X像素坐标" allow-clear>
+          <template #append>
+            px
+          </template>
+        </a-input-number>
+      </a-col>
+      <a-col :flex="2">
+        <a-input-number v-model="customTargetY" :style="{width:'160px'}" placeholder="目标点Y像素坐标" allow-clear>
+          <template #append>
+            px
+          </template>
+        </a-input-number>
+      </a-col>
+      <a-col :flex="1">
+        <a-button type="primary" @click="manualMove(customTargetX, customTargetY)">移动</a-button>
+      </a-col>
+    </a-row>
+    <a-row class="grid-demo" style="margin-bottom: 100px;">
+      <a-col :flex="3">
+        <a-input placeholder="输入prompt" v-model="chatPrompt">
+          <template #suffix>
+            <icon-send />
+          </template>
+        </a-input>
+      </a-col>
+      <a-col :flex="2">
+        <a-button type="primary" @click="sendChat" :disabled="responseSwicth">调教</a-button>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
-<style>
-.el-row {
-  margin-top: 20px;
+<style scoped>
+.grid-demo {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
 }
 </style>

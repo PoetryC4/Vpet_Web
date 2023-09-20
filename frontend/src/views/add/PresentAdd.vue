@@ -2,7 +2,6 @@
 import {reactive, ref} from 'vue'
 import {validatorNumber, validatorString} from '@/components/scripts/validate'
 
-const form = ref<any>()
 const state = reactive({
   formData: {
     name: '',
@@ -12,30 +11,10 @@ const state = reactive({
     exp: 0,
     performance: 0,
   },
-  rules: {
-    name: [
-      {validator: validatorString, trigger: "change"},
-    ],
-    picPath: [
-      {validator: validatorString, trigger: "change"},
-    ],
-    price: [
-      {validator: validatorNumber, trigger: "change"},
-    ],
-    mood: [
-      {validator: validatorNumber, trigger: "change"},
-    ],
-    performance: [
-      {validator: validatorNumber, trigger: "change"},
-    ],
-    exp: [
-      {validator: validatorNumber, trigger: "change"},
-    ],
-  },
 })
 import {addPresent} from '../../api/imgs'
 
-async function submitPresent(form: any) {
+async function submitPresent() {
   let res = await addPresent({
     presentName: state.formData.name,
     presentPrice: state.formData.price,
@@ -57,29 +36,93 @@ async function submitPresent(form: any) {
 
 
 <template>
-  <div class="fullDiv">
-    <el-form ref="form" label-width="180px" :rules="state.rules" style="width:30%" :model="state.formData">
-      <el-form-item label="礼品名称" prop="name">
-        <el-input v-model="state.formData.name"></el-input>
-      </el-form-item>
-      <el-form-item label="礼品价格" prop="price">
-        <el-input v-model="state.formData.price"></el-input>
-      </el-form-item>
-      <el-form-item label="礼品性能" prop="performance">
-        <el-input v-model="state.formData.performance"></el-input>
-      </el-form-item>
-      <el-form-item label="礼品提升经验值" prop="exp">
-        <el-input v-model="state.formData.exp"></el-input>
-      </el-form-item>
-      <el-form-item label="礼品补充心情值" prop="mood">
-        <el-input v-model="state.formData.mood"></el-input>
-      </el-form-item>
-      <el-form-item label="礼品贴图路径" prop="picPath">
-        <el-input v-model="state.formData.picPath"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitPresent(form)">添加礼品</el-button>
-      </el-form-item>
-    </el-form>
+  <div id="medic_add">
+    <a-form
+        style="left: 0;right: 0;top: 0;bottom: 0;margin: 10% auto;"
+        :model="state"
+        :style="{ width: '600px', marginTop: '20px' }"
+        :size="'medium'"
+        :auto-label-width="true"
+    >
+      <a-form-item
+          field="name"
+          label="礼物名称"
+          feedback
+          :rules="[{required:true,message:'礼物名称是必需的'},{maxLength:20,message:'礼物名称不得长于二十个字符'}]"
+          :validate-trigger="['change','input']"
+      >
+        <a-input
+            v-model="state.formData.name"
+            placeholder="请输入礼物名称"
+        />
+      </a-form-item>
+      <a-form-item
+          field="price"
+          label="礼物价格"
+          feedback
+          :rules="[{required:true,message:'礼物价格是必需的'},{type:'number', message:'输入必须为数字类型'}]"
+          :validate-trigger="['change','input']"
+      >
+        <a-input-number
+            v-model="state.formData.price"
+            placeholder="请输入礼物价格"
+        />
+      </a-form-item>
+      <a-form-item
+          field="performance"
+          label="礼品性能"
+          feedback
+          :rules="[{required:true,message:'礼物提升健康度是必需的'},{type:'number', message:'输入必须为数字类型'}]"
+          :validate-trigger="['change','input']"
+      >
+        <a-input-number
+            v-model="state.formData.performance"
+            placeholder="请输入礼品性能"
+        />
+      </a-form-item>
+      <a-form-item
+          field="exp"
+          label="礼物提升经验值"
+          feedback
+          :rules="[{required:true,message:'礼物提升经验值是必需的'},{type:'number', message:'输入必须为数字类型'}]"
+          :validate-trigger="['change','input']"
+      >
+        <a-input-number
+            v-model="state.formData.exp"
+            placeholder="请输入礼物提升的经验值"
+        />
+      </a-form-item>
+      <a-form-item
+          field="mood"
+          label="礼物补充心情值"
+          feedback
+          :rules="[{required:true,message:'礼物补充心情值是必需的'},{type:'number', message:'输入必须为数字类型'}]"
+          :validate-trigger="['change','input']"
+      >
+        <a-input-number
+            v-model="state.formData.mood"
+            placeholder="请输入礼物补充心情值"
+        />
+      </a-form-item>
+      <a-form-item
+          field="picPath"
+          label="礼物贴图路径"
+          feedback
+          :rules="[{required:true,message:'礼物贴图路径是必需的'},{maxLength:20,message:'礼物名称不得长于二十个字符'}]"
+          :validate-trigger="['change','input']"
+      >
+        <a-input
+            v-model="state.formData.picPath"
+            placeholder="请输入礼物贴图路径"
+        />
+      </a-form-item>
+      <a-form-item>
+        <a-space>
+          <a-button type="primary" @click="submitPresent">添加礼物</a-button>
+        </a-space>
+      </a-form-item>
+
+    </a-form>
+
   </div>
 </template>

@@ -33,8 +33,8 @@ export const valHung = ref<number>(50.0)
 export const valThir = ref<number>(50.0)
 export const valHeal = ref<number>(100.0)
 export const curState = ref<String>("Normal")
-export const responseSwicth: boolean[] = [false]
-export const responseShow: string[] = ['']
+export const responseSwicth = ref<boolean>(false)
+export const responseShow = ref('')
 
 const enableRandMov = ref<boolean>(true)
 const gapTop = ref<number>(0)

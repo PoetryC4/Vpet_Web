@@ -65,7 +65,7 @@ onMounted(async () => {
 </style>
 
 <template>
-  <div class="fullDiv">
+  <div id="pet_debug">
     <PetPage/>
     <Pet/>
     <div class="mid" id="preload_perc">

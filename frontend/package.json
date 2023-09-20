@@ -20,7 +20,6 @@
     "@rollup/plugin-inject": "^5.0.3",
     "@traptitech/markdown-it-katex": "^3.6.0",
     "@vueuse/core": "^9.13.0",
-    "element-plus": "^2.3.9",
     "highlight.js": "^11.7.0",
     "html2canvas": "^1.4.1",
     "import": "^0.0.6",
@@ -32,6 +31,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.3",
+    "@arco-design/web-vue": "^2.51.2",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@iconify/vue": "^4.1.0",
