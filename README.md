@@ -13,3 +13,5 @@
 ![效果图4](./imgs/pre4.png)
 
 ![效果图5](./imgs/pre5.png)
+
+![效果图6](./imgs/pre6.png)
